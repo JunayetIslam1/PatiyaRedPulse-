@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4><i class="fas fa-search"></i> Find Blood Donors</h4>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">Blood Group</label>
+                <select name="blood_group" class="form-control">
+                    <option value="">All Blood Groups</option>
+                    {% for bg in blood_groups %}
+                        <option value="{{ bg }}" {% if bg == selected_blood_group %}selected{% endif %}>
+                            {{ bg }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">District</label>
+                <input type="text" name="district" class="form-control" 
+                       placeholder="Enter district" value="{{ selected_district }}">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Upazila</label>
+                <input type="text" name="upazila" class="form-control" 
+                       placeholder="Enter upazila" value="{{ selected_upazila }}">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">&nbsp;</label>
+                <button type="submit" class="btn btn-primary form-control">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5><i class="fas fa-users"></i> Available Donors ({{ donors.count }})</h5>
+        <a href="{% url 'register' %}" class="btn btn-outline-primary">
+            <i class="fas fa-user-plus"></i> Register as Donor
+        </a>
+    </div>
+    
+    {% if donors %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Blood Group</th>
+                        <th>Location</th>
+                        <th>Last Donation</th>
+                        <th>Eligibility</th>
+                        <th>Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for donor in donors %}
+                        <tr>
+                            <td>
+                                <strong>{{ donor.full_name }}</strong><br>
+                                <small class="text-muted">
+                                    {% if donor.gender == 'Male' %}
+                                        <i class="fas fa-mars"></i>
+                                    {% elif donor.gender == 'Female' %}
+                                        <i class="fas fa-venus"></i>
+                                    {% else %}
+                                        <i class="fas fa-genderless"></i>
+                                    {% endif %}
+                                    {{ donor.age }} years old
+                                </small>
+                            </td>
+                            <td>
+                                <span class="blood-group-badge">{{ donor.blood_group }}</span>
+                            </td>
+                            <td>
+                                {{ donor.district }}<br>
+                                <small class="text-muted">{{ donor.upazila }}</small>
+                            </td>
+                            <td>
+                                {{ donor.last_donation_date|date:"M d, Y" }}<br>
+                                <small class="text-muted">{{ donor.days_since_last_donation }} days ago</small>
+                            </td>
+                            <td>
+                                {% if donor.is_eligible %}
+                                    <span class="eligible-badge">
+                                        <i class="fas fa-check-circle"></i> Eligible
+                                    </span>
+                                {% else %}
+                                    <span class="not-eligible-badge">
+                                        <i class="fas fa-clock"></i> {{ donor.eligibility_status }}
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="tel:{{ donor.mobile_number }}" class="call-btn">
+                                    <i class="fas fa-phone"></i> Call
+                                </a><br>
+                                <small class="text-muted">{{ donor.mobile_number }}</small>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No donors found</h5>
+            <p class="text-muted">Try adjusting your search criteria or check back later.</p>
+            <a href="{% url 'register' %}" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i> Register as a Donor
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h6><i class="fas fa-info-circle"></i> Important Notes</h6>
+    </div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li><strong>Eligibility:</strong> Donors must wait 90 days between donations</li>
+            <li><strong>Verification:</strong> Always verify donor identity and blood compatibility</li>
+            <li><strong>Emergency:</strong> For life-threatening situations, contact hospital immediately</li>
+            <li><strong>Direct Contact:</strong> This platform provides direct donor-seeker connection only</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

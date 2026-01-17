@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-user"></i> Profile Summary</h5>
+            </div>
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <span class="blood-group-badge" style="font-size: 1.5rem; padding: 0.5rem 1rem;">
+                        {{ donor.blood_group }}
+                    </span>
+                </div>
+                <h4>{{ donor.full_name }}</h4>
+                <p class="text-muted">
+                    {% if donor.gender == 'Male' %}
+                        <i class="fas fa-mars"></i>
+                    {% elif donor.gender == 'Female' %}
+                        <i class="fas fa-venus"></i>
+                    {% else %}
+                        <i class="fas fa-genderless"></i>
+                    {% endif %}
+                    {{ donor.age }} years old
+                </p>
+                <hr>
+                <p><strong>Location:</strong><br>{{ donor.district }}, {{ donor.upazila }}</p>
+                <p><strong>Mobile:</strong><br>{{ donor.mobile_number }}</p>
+                {% if donor.email %}
+                    <p><strong>Email:</strong><br>{{ donor.email }}</p>
+                {% endif %}
+                <hr>
+                <p><strong>Last Donation:</strong><br>{{ donor.last_donation_date|date:"M d, Y" }}</p>
+                <p><strong>Days Since Last Donation:</strong><br>{{ donor.days_since_last_donation }}</p>
+                <p>
+                    <strong>Eligibility Status:</strong><br>
+                    {% if donor.is_eligible %}
+                        <span class="eligible-badge">
+                            <i class="fas fa-check-circle"></i> Eligible to Donate
+                        </span>
+                    {% else %}
+                        <span class="not-eligible-badge">
+                            <i class="fas fa-clock"></i> {{ donor.eligibility_status }}
+                        </span>
+                    {% endif %}
+                </p>
+                <p>
+                    <strong>Availability Status:</strong><br>
+                    {% if donor.availability_status == 'Available' %}
+                        <span class="badge bg-success">Available</span>
+                    {% else %}
+                        <span class="badge bg-danger">Not Available</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-edit"></i> Edit Profile</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Full Name</label>
+                                {{ form.full_name }}
+                                {% if form.full_name.errors %}
+                                    <div class="text-danger small">{{ form.full_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Blood Group</label>
+                                {{ form.blood_group }}
+                                {% if form.blood_group.errors %}
+                                    <div class="text-danger small">{{ form.blood_group.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Gender</label>
+                                {{ form.gender }}
+                                {% if form.gender.errors %}
+                                    <div class="text-danger small">{{ form.gender.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Age</label>
+                                {{ form.age }}
+                                {% if form.age.errors %}
+                                    <div class="text-danger small">{{ form.age.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Mobile Number</label>
+                        {{ form.mobile_number }}
+                        {% if form.mobile_number.errors %}
+                            <div class="text-danger small">{{ form.mobile_number.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Email (Optional)</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="text-danger small">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">District</label>
+                                {{ form.district }}
+                                {% if form.district.errors %}
+                                    <div class="text-danger small">{{ form.district.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Upazila</label>
+                                {{ form.upazila }}
+                                {% if form.upazila.errors %}
+                                    <div class="text-danger small">{{ form.upazila.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Last Blood Donation Date</label>
+                        {{ form.last_donation_date }}
+                        {% if form.last_donation_date.errors %}
+                            <div class="text-danger small">{{ form.last_donation_date.errors.0 }}</div>
+                        {% endif %}
+                        <small class="text-muted">This affects your eligibility status (90-day gap required)</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Availability Status</label>
+                        {{ form.availability_status }}
+                        {% if form.availability_status.errors %}
+                            <div class="text-danger small">{{ form.availability_status.errors.0 }}</div>
+                        {% endif %}
+                        <small class="text-muted">Set to "Not Available" if you cannot donate currently</small>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-save"></i> Update Profile
+                        </button>
+                        <a href="{% url 'donor_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Donor List
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
