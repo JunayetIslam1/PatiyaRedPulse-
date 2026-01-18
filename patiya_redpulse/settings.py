@@ -1,11 +1,12 @@
 import os
+import dj_database_url
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-development-key-change-in-production'
 
-DEBUG = True # অনলাইনে রান হওয়ার পর এটি False করে দেবেন
+DEBUG = True 
 
 ALLOWED_HOSTS = ['*']
 
@@ -23,7 +24,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # স্ট্যাটিক ফাইলের জন্য যোগ করা হয়েছে
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -52,11 +53,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'patiya_redpulse.wsgi.application'
 
+# ডাটাবেস সেটিংস: Render-এর DATABASE_URL ব্যবহার করবে
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3', # স্থানীয়ভাবে চালানোর জন্য
+        conn_max_age=600
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -71,7 +73,6 @@ TIME_ZONE = 'Asia/Dhaka'
 USE_I18N = True
 USE_TZ = True
 
-# Static Files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
