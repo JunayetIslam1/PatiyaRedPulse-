@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="fas fa-plus"></i> Submit Blood Request</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Patient Name *</label>
+                                {{ form.patient_name }}
+                                {% if form.patient_name.errors %}
+                                    <div class="text-danger small">{{ form.patient_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Required Blood Group *</label>
+                                {{ form.required_blood_group }}
+                                {% if form.required_blood_group.errors %}
+                                    <div class="text-danger small">{{ form.required_blood_group.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Number of Bags *</label>
+                                {{ form.number_of_bags }}
+                                {% if form.number_of_bags.errors %}
+                                    <div class="text-danger small">{{ form.number_of_bags.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Patient Condition *</label>
+                                {{ form.patient_condition }}
+                                {% if form.patient_condition.errors %}
+                                    <div class="text-danger small">{{ form.patient_condition.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Emergency Level *</label>
+                        {{ form.emergency_level }}
+                        {% if form.emergency_level.errors %}
+                            <div class="text-danger small">{{ form.emergency_level.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Hospital Name *</label>
+                        {{ form.hospital_name }}
+                        {% if form.hospital_name.errors %}
+                            <div class="text-danger small">{{ form.hospital_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Hospital Address *</label>
+                        {{ form.hospital_address }}
+                        {% if form.hospital_address.errors %}
+                            <div class="text-danger small">{{ form.hospital_address.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Required Date *</label>
+                                {{ form.required_date }}
+                                {% if form.required_date.errors %}
+                                    <div class="text-danger small">{{ form.required_date.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Contact Phone *</label>
+                                {{ form.contact_phone }}
+                                {% if form.contact_phone.errors %}
+                                    <div class="text-danger small">{{ form.contact_phone.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Additional Information (Optional)</label>
+                        {{ form.additional_info }}
+                        {% if form.additional_info.errors %}
+                            <div class="text-danger small">{{ form.additional_info.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <h6><i class="fas fa-exclamation-triangle"></i> Important Notice</h6>
+                        <ul class="mb-0">
+                            <li>This request will be visible to the public</li>
+                            <li>Emergency requests will be highlighted in red</li>
+                            <li>Please provide accurate information</li>
+                            <li>For immediate life-threatening emergencies, contact hospital directly</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-paper-plane"></i> Submit Request
+                        </button>
+                        <a href="{% url 'blood_requests_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-list"></i> View Requests
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

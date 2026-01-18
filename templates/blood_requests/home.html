@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1 class="hero-title">
+                <i class="fas fa-heartbeat"></i> Patiya RedPulse
+            </h1>
+            <p class="hero-subtitle">
+                Connecting blood seekers with donors instantly in Patiya, Chattogram
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{% url 'donor_list' %}" class="btn btn-light btn-lg">
+                    <i class="fas fa-search"></i> Find Donors Now
+                </a>
+                <a href="{% url 'submit_blood_request' %}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-plus"></i> Submit Request
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-md-3 col-6 mb-4">
+            <a href="{% url 'donor_list' %}" class="text-decoration-none">
+                <div class="stats-card text-center">
+                    <div class="stats-icon stats-donors mx-auto">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stats-number">{{ total_donors }}</div>
+                    <div class="stats-label">Total Donors</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 col-6 mb-4">
+            <a href="{% url 'donor_list' %}" class="text-decoration-none">
+                <div class="stats-card text-center">
+                    <div class="stats-icon stats-available mx-auto">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stats-number">{{ available_donors }}</div>
+                    <div class="stats-label">Available Now</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 col-6 mb-4">
+            <a href="{% url 'blood_requests_list' %}" class="text-decoration-none">
+                <div class="stats-card text-center">
+                    <div class="stats-icon stats-requests mx-auto">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <div class="stats-number">{{ total_requests }}</div>
+                    <div class="stats-label">Blood Requests</div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 col-6 mb-4">
+            <a href="{% url 'blood_requests_list' %}" class="text-decoration-none">
+                <div class="stats-card text-center">
+                    <div class="stats-icon stats-emergency mx-auto">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stats-number">{{ emergency_requests }}</div>
+                    <div class="stats-label">Emergency</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-info-circle"></i> How It Works</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex mb-4">
+                                <div class="stats-icon stats-donors me-3" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div>
+                                    <h6>Search Donors</h6>
+                                    <p class="text-muted">Find donors by blood group, district, or upazila</p>
+                                </div>
+                            </div>
+                            <div class="d-flex mb-4">
+                                <div class="stats-icon stats-available me-3" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div>
+                                    <h6>Call Directly</h6>
+                                    <p class="text-muted">One-click calling to connect instantly</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex mb-4">
+                                <div class="stats-icon stats-requests me-3" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div>
+                                    <h6>Check Eligibility</h6>
+                                    <p class="text-muted">Automatic 90-day eligibility calculation</p>
+                                </div>
+                            </div>
+                            <div class="d-flex mb-4">
+                                <div class="stats-icon stats-emergency me-3" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div>
+                                    <h6>Save Lives</h6>
+                                    <p class="text-muted">Direct connection saves precious time</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-exclamation-triangle"></i> Emergency Notice</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger mb-3">
+                        <h6><i class="fas fa-clock"></i> Time is Critical</h6>
+                        <p class="mb-0">For life-threatening emergencies, contact the nearest hospital immediately while using this platform.</p>
+                    </div>
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-shield-alt"></i> Safety First</h6>
+                        <p class="mb-0">Always verify donor identity and blood compatibility before transfusion.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5><i class="fas fa-users"></i> For Blood Seekers</h5>
+                </div>
+                <div class="card-body">
+                    <p>Need blood urgently? Our platform connects you directly with eligible donors in your area.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Search by blood group and location</li>
+                        <li><i class="fas fa-check text-success me-2"></i>See real-time eligibility status</li>
+                        <li><i class="fas fa-check text-success me-2"></i>One-click calling</li>
+                        <li><i class="fas fa-check text-success me-2"></i>24/7 access</li>
+                    </ul>
+                    <a href="{% url 'donor_list' %}" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Find Donors
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5><i class="fas fa-hand-holding-heart"></i> For Donors</h5>
+                </div>
+                <div class="card-body">
+                    <p>Register as a donor and help save lives in your community. Your contribution matters!</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Simple registration process</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Automatic eligibility tracking</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Control your availability status</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Help your community</li>
+                    </ul>
+                    <a href="{% url 'register' %}" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Register Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5><i class="fas fa-shield-alt"></i> Important Guidelines</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6><i class="fas fa-user-shield text-primary"></i> Donor Verification</h6>
+                    <ul>
+                        <li>Verify donor identity</li>
+                        <li>Check blood compatibility</li>
+                        <li>Confirm donation date</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6><i class="fas fa-calendar-check text-success"></i> Eligibility Rules</h6>
+                    <ul>
+                        <li>90 days between donations</li>
+                        <li>18+ years old</li>
+                        <li>Good health condition</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6><i class="fas fa-phone text-warning"></i> Emergency Contact</h6>
+                    <ul>
+                        <li>Hospital direct line</li>
+                        <li>Doctor consultation</li>
+                        <li>Medical supervision</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
