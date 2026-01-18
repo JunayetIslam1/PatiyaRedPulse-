@@ -83,5 +83,9 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+<<<<<<< HEAD
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 LOGOUT_REDIRECT_URL = 'home'
+=======
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+>>>>>>> 37d8f18213b0ff290b28b28f914acac1d43f7d74

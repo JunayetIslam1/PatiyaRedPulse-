@@ -454,6 +454,7 @@
                                 <i class="fas fa-user"></i> Profile
                             </a>
                         </li>
+<<<<<<< HEAD
                        <li class="nav-item">
     <form action="{% url 'logout' %}" method="post" class="d-inline">
         {% csrf_token %}
@@ -462,6 +463,13 @@
         </button>
     </form>
 </li>
+=======
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </li>
+>>>>>>> 37d8f18213b0ff290b28b28f914acac1d43f7d74
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'login' %}">Login</a>
@@ -492,10 +500,14 @@
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 Patiya RedPulse. A humanitarian blood donation platform for Patiya, Chattogram.</p>
+<<<<<<< HEAD
     <p><i class="fas fa-heart" style="color: var(--medical-red);"></i> Saving lives through direct connection.</p>
     <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.8;">
         Developed by <span style="font-weight: 600; color: var(--medical-red);">Junayet Islam</span>
     </p>
+=======
+            <p><i class="fas fa-heart" style="color: var(--medical-red);"></i> Saving lives through direct connection.</p>
+>>>>>>> 37d8f18213b0ff290b28b28f914acac1d43f7d74
         </div>
     </footer>
 
