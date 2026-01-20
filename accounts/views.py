@@ -3,8 +3,7 @@ from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import DonorRegistrationForm, DonorUpdateForm
-from .models import Donor
-
+from .models import Donor, DonationHistory
 
 def register_donor(request):
     if request.method == 'POST':
@@ -13,7 +12,7 @@ def register_donor(request):
             user = form.save()
             login(request, user)
             messages.success(request, 'Registration successful! Welcome to Patiya RedPulse.')
-            return redirect('donor_list')
+            return redirect('dashboard') # রেজিস্ট্রেশনের পর ড্যাশবোর্ডে যাবে
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -27,6 +26,21 @@ def register_donor(request):
     }
     return render(request, 'accounts/register.html', context)
 
+@login_required
+def dashboard(request):
+    """ইউজার ড্যাশবোর্ড যা রক্তদানের ইতিহাস এবং এলিজিবিলিটি দেখাবে"""
+    try:
+        donor = request.user.donor
+        donations = donor.donations.all() # এটি DonationHistory থেকে ডাটা আনবে
+        context = {
+            'donor': donor,
+            'donations': donations,
+            'title': 'Donor Dashboard'
+        }
+        return render(request, 'accounts/dashboard.html', context)
+    except Donor.DoesNotExist:
+        messages.error(request, 'Donor profile not found.')
+        return redirect('register')
 
 @login_required
 def profile(request):
@@ -56,13 +70,12 @@ def profile(request):
     }
     return render(request, 'accounts/profile.html', context)
 
-
 def donor_list(request):
     blood_group = request.GET.get('blood_group', '')
     district = request.GET.get('district', '')
     upazila = request.GET.get('upazila', '')
     
-    donors = Donor.objects.filter(is_active=True, availability_status='Available')
+    donors = Donor.objects.filter(is_active=True) # সব ডোনার দেখাবে ফিল্টারিং এর জন্য
     
     if blood_group:
         donors = donors.filter(blood_group=blood_group)
