@@ -2,37 +2,25 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views as auth_views, logout
+from django.contrib.auth import views as auth_views
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from accounts.models import Donor
-from django.utils import timezone
 
-def fix_users(request):
+# --- নতুন অ্যাডমিন তৈরি করার ফাংশন ---
+def create_new_admin(request):
     try:
-        # লগআউট করে সেশন ক্লিয়ার করবে
-        logout(request)
-        users = User.objects.all()
-        count = 0
-        for user in users:
-            if not hasattr(user, 'donor'):
-                Donor.objects.create(
-                    user=user,
-                    full_name=user.username,
-                    blood_group='O+',
-                    gender='Male',
-                    mobile_number='01700000000',
-                    district='Patiya',
-                    upazila='Patiya',
-                    last_donation_date=timezone.now().date()
-                )
-                count += 1
-        return HttpResponse(f"Fixed {count} profiles and cleared sessions. Try to login now!")
+        # 'admin_new' নামে একটি ইউজার তৈরি হবে, পাসওয়ার্ড হবে 'Admin1234'
+        if not User.objects.filter(username='admin_new').exists():
+            user = User.objects.create_superuser('admin_new', 'admin@example.com', 'Admin1234')
+            return HttpResponse("New Admin created! Username: admin_new, Password: Admin1234. Login now at /admin")
+        else:
+            return HttpResponse("Admin already exists.")
     except Exception as e:
         return HttpResponse(f"Error: {e}")
 
 urlpatterns = [
-    path('fix-old-users/', fix_users),
+    path('make-me-admin-now/', create_new_admin), # এই লিঙ্কে গেলে অ্যাডমিন তৈরি হবে
     path('admin/', admin.site.urls),
     path('', include('blood_requests.urls')),
     path('accounts/', include('accounts.urls')),
