@@ -4,8 +4,10 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-development-key-change-in-production'
+# Security: Production-এর জন্য SECRET_KEY নিরাপদ রাখা জরুরি
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-development-key-change-in-production')
 
+# Render-এ চালানোর সময় DEBUG False রাখা ভালো
 DEBUG = True 
 
 ALLOWED_HOSTS = ['*']
@@ -53,10 +55,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'patiya_redpulse.wsgi.application'
 
-# ডাটাবেস সেটিংস: Render-এর DATABASE_URL ব্যবহার করবে
+# Database Configuration for Render
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3', # স্থানীয়ভাবে চালানোর জন্য
+        default='sqlite:///db.sqlite3',
         conn_max_age=600
     )
 }
@@ -89,13 +91,12 @@ LOGOUT_REDIRECT_URL = '/'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
-
-
-# Email Configuration for Password Reset
+# --- Secured Email Configuration ---
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'jamshadulislam309@gmail.com' # এখানে আপনার আসল জিমেইল দিন
-EMAIL_HOST_PASSWORD = 'zwqr owko yump iacd' # এখানে আপনার কপি করা ১৬ অক্ষরের কোডটি দিন
 
+# Render-এর Environment Variables থেকে তথ্যগুলো আসবে
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
