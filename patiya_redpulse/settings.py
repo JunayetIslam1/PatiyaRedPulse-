@@ -88,3 +88,14 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+
+
+# Email Configuration for Password Reset
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'jamshadulislam309@gmail.com' # এখানে আপনার আসল জিমেইল দিন
+EMAIL_HOST_PASSWORD = 'zwqr owko yump iacd' # এখানে আপনার কপি করা ১৬ অক্ষরের কোডটি দিন
+
