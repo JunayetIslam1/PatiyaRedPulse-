@@ -3,8 +3,20 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from django.http import HttpResponse # এটি দরকার
+from django.core.management import call_command # এটি দরকার
+
+# ডাটাবেস আপডেট করার জন্য এই বিশেষ ফাংশনটি
+def run_migrations(request):
+    try:
+        call_command('makemigrations')
+        call_command('migrate')
+        return HttpResponse("Database Updated Successfully!")
+    except Exception as e:
+        return HttpResponse(f"Error: {e}")
 
 urlpatterns = [
+    path('run-migrations-now/', run_migrations), # এই লিঙ্কে ক্লিক করলে ডাটাবেস ঠিক হবে
     path('admin/', admin.site.urls),
     path('', include('blood_requests.urls')),
     path('accounts/', include('accounts.urls')),
