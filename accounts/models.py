@@ -3,17 +3,12 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import datetime, timedelta
 
-
 class Donor(models.Model):
     BLOOD_GROUPS = [
-        ('A+', 'A+'),
-        ('A-', 'A-'),
-        ('B+', 'B+'),
-        ('B-', 'B-'),
-        ('AB+', 'AB+'),
-        ('AB-', 'AB-'),
-        ('O+', 'O+'),
-        ('O-', 'O-'),
+        ('A+', 'A+'), ('A-', 'A-'),
+        ('B+', 'B+'), ('B-', 'B-'),
+        ('AB+', 'AB+'), ('AB-', 'AB-'),
+        ('O+', 'O+'), ('O-', 'O-'),
     ]
     
     GENDER_CHOICES = [
@@ -54,12 +49,31 @@ class Donor(models.Model):
         return self.days_since_last_donation >= 120
     
     @property
+    def days_until_eligible(self):
+        """পরবর্তী রক্তদানের জন্য কতদিন বাকি তা হিসেব করবে"""
+        if self.is_eligible:
+            return 0
+        return 120 - self.days_since_last_donation
+
+    @property
     def eligibility_status(self):
         if self.is_eligible:
             return "Eligible to Donate"
         else:
-            remaining_days = 120 - self.days_since_last_donation
-            return f"Not Eligible ({remaining_days} days remaining)"
+            return f"Not Eligible ({self.days_until_eligible} days remaining)"
     
     class Meta:
         ordering = ['-registration_date']
+
+class DonationHistory(models.Model):
+    donor = models.ForeignKey(Donor, on_delete=models.CASCADE, related_name='donations')
+    donation_date = models.DateField()
+    hospital_name = models.CharField(max_length=200, blank=True, null=True)
+    note = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.donor.full_name} - {self.donation_date}"
+
+    class Meta:
+        ordering = ['-donation_date']
