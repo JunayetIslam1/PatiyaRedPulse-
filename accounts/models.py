@@ -51,14 +51,14 @@ class Donor(models.Model):
     
     @property
     def is_eligible(self):
-        return self.days_since_last_donation >= 90
+        return self.days_since_last_donation >= 120
     
     @property
     def eligibility_status(self):
         if self.is_eligible:
             return "Eligible to Donate"
         else:
-            remaining_days = 90 - self.days_since_last_donation
+            remaining_days = 120 - self.days_since_last_donation
             return f"Not Eligible ({remaining_days} days remaining)"
     
     class Meta:
