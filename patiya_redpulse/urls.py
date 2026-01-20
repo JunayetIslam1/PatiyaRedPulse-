@@ -3,20 +3,37 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from django.http import HttpResponse # এটি দরকার
-from django.core.management import call_command # এটি দরকার
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from accounts.models import Donor
+from django.utils import timezone
 
-# ডাটাবেস আপডেট করার জন্য এই বিশেষ ফাংশনটি
-def run_migrations(request):
+# --- পুরনো ইউজারদের সমস্যা সমাধান করার ফাংশন ---
+def fix_users(request):
     try:
-        call_command('makemigrations')
-        call_command('migrate')
-        return HttpResponse("Database Updated Successfully!")
+        users = User.objects.all()
+        count = 0
+        for user in users:
+            # যদি ইউজারের Donor প্রোফাইল না থাকে, তবে একটি ডিফল্ট প্রোফাইল তৈরি হবে
+            if not hasattr(user, 'donor'):
+                Donor.objects.create(
+                    user=user,
+                    full_name=user.username,
+                    blood_group='O+', # Default group
+                    gender='Male',
+                    age=25,
+                    mobile_number='01700000000',
+                    district='Patiya',
+                    upazila='Patiya',
+                    last_donation_date=timezone.now().date()
+                )
+                count += 1
+        return HttpResponse(f"Successfully fixed {count} profiles! Now they can login.")
     except Exception as e:
         return HttpResponse(f"Error: {e}")
 
 urlpatterns = [
-    path('run-migrations-now/', run_migrations), # এই লিঙ্কে ক্লিক করলে ডাটাবেস ঠিক হবে
+    path('fix-old-users/', fix_users), # এই লিঙ্কে ক্লিক করে ইউজারদের ঠিক করবেন
     path('admin/', admin.site.urls),
     path('', include('blood_requests.urls')),
     path('accounts/', include('accounts.urls')),
