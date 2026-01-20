@@ -48,15 +48,14 @@
     
     {% if donors %}
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th>Name</th>
                         <th>Blood Group</th>
                         <th>Location</th>
-                        <th>Last Donation</th>
-                        <th>Eligibility</th>
-                        <th>Contact</th>
+                        <th>Status & Countdown</th>
+                        <th>Contact Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,25 +82,31 @@
                                 <small class="text-muted">{{ donor.upazila }}</small>
                             </td>
                             <td>
-                                {{ donor.last_donation_date|date:"M d, Y" }}<br>
-                                <small class="text-muted">{{ donor.days_since_last_donation }} days ago</small>
-                            </td>
-                            <td>
                                 {% if donor.is_eligible %}
-                                    <span class="eligible-badge">
-                                        <i class="fas fa-check-circle"></i> Eligible
-                                    </span>
+                                    <span class="badge bg-success mb-1">
+                                        <i class="fas fa-check-circle"></i> Eligible to Donate
+                                    </span><br>
+                                    <small class="text-success fw-bold">Ready to help!</small>
                                 {% else %}
-                                    <span class="not-eligible-badge">
-                                        <i class="fas fa-clock"></i> {{ donor.eligibility_status }}
-                                    </span>
+                                    <span class="badge bg-danger mb-1">
+                                        <i class="fas fa-clock"></i> Not Eligible
+                                    </span><br>
+                                    <small class="text-muted">
+                                        Available in: <strong>{{ donor.days_until_eligible }} days</strong>
+                                    </small>
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="tel:{{ donor.mobile_number }}" class="call-btn">
-                                    <i class="fas fa-phone"></i> Call
+                                <a href="tel:{{ donor.mobile_number }}" class="btn btn-sm btn-primary mb-1 w-100">
+                                    <i class="fas fa-phone"></i> Call: {{ donor.mobile_number }}
                                 </a><br>
-                                <small class="text-muted">{{ donor.mobile_number }}</small>
+                                
+                                <a href="https://wa.me/88{{ donor.mobile_number }}?text=আসসালামু আলাইকুম, পটিয়া রেড-পালস (Patiya RedPulse) থেকে আপনার নম্বরটি পেয়েছি। আপনার {{ donor.blood_group }} রক্ত কি দান করা সম্ভব?" 
+                                   target="_blank" 
+                                   class="btn btn-sm btn-success w-100"
+                                   style="background-color: #25D366; border-color: #25D366;">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp Message
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -121,15 +126,14 @@
 </div>
 
 <div class="card mt-4">
-    <div class="card-header">
+    <div class="card-header bg-light">
         <h6><i class="fas fa-info-circle"></i> Important Notes</h6>
     </div>
     <div class="card-body">
         <ul class="mb-0">
-            <li><strong>Eligibility:</strong> Donors must wait 90 days between donations</li>
-            <li><strong>Verification:</strong> Always verify donor identity and blood compatibility</li>
-            <li><strong>Emergency:</strong> For life-threatening situations, contact hospital immediately</li>
-            <li><strong>Direct Contact:</strong> This platform provides direct donor-seeker connection only</li>
+            <li><strong>Eligibility:</strong> Donors must wait 120 days between donations.</li>
+            <li><strong>Countdown:</strong> The days shown indicate when the donor will be ready for the next donation.</li>
+            <li><strong>WhatsApp:</strong> Use the WhatsApp button for quick communication if the donor doesn't pick up the call.</li>
         </ul>
     </div>
 </div>
